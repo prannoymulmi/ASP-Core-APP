@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <UserSecretsId>User-Secret-ID</UserSecretsId>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
@@ -22,7 +23,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.0.1" />
-    <PackageReference Include="SendGrid" Version="9.5.0" />
+    <PackageReference Include="SendGrid.NetCore" Version="1.0.0-rtm-00002" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0-msbuild3-final" />
@@ -31,15 +32,22 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0-msbuild3-final" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="web.config" CopyToPublishDirectory="PreserveNewest" />
-    <Content Include="Views" CopyToPublishDirectory="PreserveNewest" />
+    <None Update="wwwroot\**\*;Views\**\*;Areas\**\Views">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
+  
   <Target Name="MyPreCompileTarget" BeforeTargets="Build">
   </Target>
+  
   <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="bower install" />
     <Exec Command="dotnet bundle" />
+    <Exec Command="npm install" />
+    <Exec Command="gulp clean" />
+    <Exec Command="gulp min" />
   </Target>
+  
   <Target Name="MyPostCompileTarget" AfterTargets="Publish">
   </Target>
 </Project>
