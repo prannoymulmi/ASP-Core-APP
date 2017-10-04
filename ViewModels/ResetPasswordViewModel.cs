@@ -2,7 +2,7 @@
 
 namespace App.ViewModels
 {
-    public class ForgotPasswordConfirmViewModel
+    public class ResetPasswordViewModel
     {
         [Required]
         [EmailAddress]

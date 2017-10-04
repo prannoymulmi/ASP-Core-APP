@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers
 {
-    public class ForgotPasswordConfrimController : Controller
+    public class ResetPasswordController : Controller
     {
         // GET
         public IActionResult Index()
@@ -13,7 +13,7 @@ namespace App.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(ForgotPasswordConfirmViewModel model)
+        public IActionResult Index(ResetPasswordViewModel model)
         {
             
             return RedirectToAction("Index", "Main");

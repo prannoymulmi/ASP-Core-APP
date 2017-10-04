@@ -1,11 +1,11 @@
-﻿@model ForgotPasswordConfirmViewModel
+﻿@model ResetPasswordViewModel
 @{
     ViewData["Title"] = "Reset Password";
 }
 
 <div class="ui raised very padded text container">
     <h2 class="ui header centered">Reset Password</h2>
-    <form asp-controller="ForgotPasswordConfrim" asp-action="Index" class="ui large form validate-me" method="post">
+    <form asp-controller="ResetPassword" asp-action="Index" class="ui large form validate-me" method="post">
 
         <input asp-for="Code" type="hidden" value="@Context.Request.Query["code"]" />
         <div class="ui stacked segment">
