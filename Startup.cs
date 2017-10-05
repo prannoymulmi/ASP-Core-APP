@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Entities;
 using App.Models;
+using CourseProjectApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -23,6 +24,11 @@ namespace App
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+            if (env.IsDevelopment())
+            {
+                //Needed if you want to access the user scerets settings.json in the localhost or dev enviroment
+                builder.AddUserSecrets<Startup>();
+            }
             Configuration = builder.Build();
         }
 
@@ -37,6 +43,9 @@ namespace App
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ProfileContextDb>()
                 .AddDefaultTokenProviders();
+            services.Configure<MessageSenderOptions>(options => Configuration.Bind(options));
+            //services.Configure<MessageSenderOptions>(Configuration);
+            services.AddTransient<IEmailSend, EmailSend>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +65,13 @@ namespace App
 
             app.UseStaticFiles();
             app.UseIdentity();
+            app.UseFacebookAuthentication(new FacebookOptions()
+            {
+                AppId = Configuration["Authentication:Facebook:Id"],
+                AppSecret = Configuration["Authentication:Facebook:secretCode"]
+
+
+            });
 
             app.UseMvc(routes =>
             {
