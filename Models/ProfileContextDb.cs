@@ -15,6 +15,9 @@ namespace App.Models
        
        
         public DbSet<ApplicationUser> User { get; set; }
+        public DbSet<Individual> Indvidual { get; set; }
+        public DbSet<Hobbies> Hobbies { get; set; }
+        public DbSet<Organization> Organization { get; set; }
 
     }
 }
