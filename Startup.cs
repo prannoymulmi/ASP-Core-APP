@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Entities;
 using App.Models;
+using App.Repository;
 using CourseProjectApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,10 +47,11 @@ namespace App
             services.Configure<MessageSenderOptions>(options => Configuration.Bind(options));
             //services.Configure<MessageSenderOptions>(Configuration);
             services.AddTransient<IEmailSend, EmailSend>();
+            services.AddTransient<IUserDetailRepo, UserDetailRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ProfileContextDb context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -65,13 +67,13 @@ namespace App
 
             app.UseStaticFiles();
             app.UseIdentity();
-            app.UseFacebookAuthentication(new FacebookOptions()
+            /*app.UseFacebookAuthentication(new FacebookOptions()
             {
                 AppId = Configuration["Authentication:Facebook:Id"],
                 AppSecret = Configuration["Authentication:Facebook:secretCode"]
 
 
-            });
+            });*/
 
             app.UseMvc(routes =>
             {
@@ -79,6 +81,8 @@ namespace App
                     name: "default",
                     template: "{controller=Main}/{action=Index}/{id?}");
             });
+            
+            Initializer.InitializeContext(context);
         }
     }
 }
