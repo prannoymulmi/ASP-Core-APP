@@ -1,6 +1,6 @@
 # Description
 
-This is a Simple ASP.net core we application where a user can login and see the details of the individual.
+This is a Simple ASP.net core application where a user can login and see the details of the individual.
 
  Diffrent Frameworks in the ASP.net are being used in this project
    Entity.Core.FrameWork Used for the database migrations
